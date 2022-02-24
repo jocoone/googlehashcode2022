@@ -23,7 +23,7 @@ public class Project {
         this.bestBefore = bestBefore;
         this.roles = roles;
         this.skills = new ArrayList<>();
-        this.finished =false;
+        this.finished = false;
     }
 
     public String getName() {
@@ -49,11 +49,15 @@ public class Project {
 
     public void finish() {
         finished = true;
-        for(Skill skill: this.skills) {
+        for (Skill skill : this.skills) {
             if (skill.getContributor() != null) {
                 skill.getContributor().levelUp(skill);
             }
         }
+    }
+
+    public boolean isStaffed() {
+        return skills.stream().filter(skill -> skill.isFilled()).count() == roles;
     }
 
     public static class Skill {

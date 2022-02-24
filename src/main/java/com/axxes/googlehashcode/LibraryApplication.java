@@ -82,11 +82,13 @@ public class LibraryApplication {
             for (Project project : nfProj) {
                 for (Project.Skill pskill : project.getSkills()) {
                     for (Contributor contributor : contributors) {
-                        if (contributor.isBusy()) {
-                            contributor.work();
-                        } else {
-                            if (pskill.getLevel() <= contributor.getLevel(pskill.getName())) {
-                                project.addContributor(pskill, contributor);
+                        if (!contributor.isBusy()) {
+                            if (project.isStaffed()) {
+                                contributor.work();
+                            } else {
+                                if (pskill.getLevel() <= contributor.getLevel(pskill.getName())) {
+                                    project.addContributor(pskill, contributor);
+                                }
                             }
                         }
                     }
@@ -94,14 +96,14 @@ public class LibraryApplication {
             }
             int finalDay = day;
             projects.forEach(project -> {
-                        if (project.isNotFinished() && project.getDays() == finalDay) {
+                        if (project.isNotFinished() && project.isStaffed() && project.getDays() == finalDay) {
                             project.finish();
                         }
                     }
             );
             day++;
         }
-        createOutput(file + "_out", projects.stream().filter(project -> !project.getContributors().isEmpty()).toList());
+        createOutput(file + "_out", projects.stream().filter(project -> project.isStaffed() && !project.isNotFinished()).toList());
     }
 
     public static void createOutput(String fileName, List<Project> projects) {
