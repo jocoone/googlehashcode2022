@@ -5,6 +5,8 @@ import com.axxes.googlehashcode.model.Project;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 import static com.axxes.googlehashcode.util.Util.readLines;
@@ -22,10 +24,10 @@ public class LibraryApplication {
     public static void main(String[] args) {
         //convert(a_filename);
         convert(b_filename);
-        //convert(c_filename);
-        //convert(d_filename);
-        //convert(e_filename);
-        //convert(f_filename);
+        convert(c_filename);
+        convert(d_filename);
+        convert(e_filename);
+        convert(f_filename);
     }
 
     private static void convert(String file) {
@@ -34,10 +36,10 @@ public class LibraryApplication {
         final int numContribu = Integer.parseInt(splitline1[0]);
         final int numProjects = Integer.parseInt(splitline1[1]);
         final List<Contributor> contributors = new ArrayList<>();
+        System.out.println(file);
         int i = 1;
         do {
             final String line = lines.get(i);
-            System.out.println(line);
             final String[] s = line.split(" ");
             final String name = s[0];
             final int skills = Integer.parseInt(s[1]);
@@ -56,7 +58,6 @@ public class LibraryApplication {
         List<Project> projects = new ArrayList<>();
         do {
             final String line = lines.get(i);
-            System.out.println(line);
             final String[] s = line.split(" ");
             final String name = s[0];
             final int numDays = Integer.parseInt(s[1]);
@@ -77,8 +78,28 @@ public class LibraryApplication {
         } while (projects.size() < numProjects);
 
         int day = 0;
-        while (day < projects.stream().map(Project::getDays).max(Integer::compareTo).orElse(0)) {
-            List<Project> nfProj = projects.stream().filter(Project::isNotFinished).toList();
+        System.out.println();
+
+        /*projects.stream().filter(project -> project.getSkills().size() == 1).collect(Collectors.toList()).forEach(project -> {
+            contributors.stream().filter(c -> c.getLevel(project.getSkills().get(0).getName()) > project.getSkills().get(0).getLevel()).findFirst().ifPresent(contributor -> {
+                project.addContributor(project.getSkills().get(0), contributor);
+            });
+        });*/
+
+        projects.stream().filter(project -> project.getSkills().size() == 2).collect(Collectors.toList()).forEach(project -> {
+            project.getSkills().forEach(skill -> {
+                contributors.stream().filter(c -> c.getLevel(skill.getName()) > skill.getLevel()).findFirst().ifPresent(contributor -> {
+                    project.addContributor(skill, contributor);
+                });
+            });
+
+        });
+
+
+
+
+        /*while (day < projects.stream().map(Project::getDays).max(Integer::compareTo).orElse(0)) {
+            List<Project> nfProj = projects.stream().filter(Project::isNotFinished).collect(Collectors.toList());
             for (Project project : nfProj) {
                 for (Project.Skill pskill : project.getSkills()) {
                     for (Contributor contributor : contributors) {
@@ -102,8 +123,8 @@ public class LibraryApplication {
                     }
             );
             day++;
-        }
-        createOutput(file + "_out", projects.stream().filter(project -> project.isStaffed() && !project.isNotFinished()).toList());
+        }*/
+        createOutput(file + "_out", projects.stream().filter(Project::isStaffed).collect(Collectors.toList()));
     }
 
     public static void createOutput(String fileName, List<Project> projects) {

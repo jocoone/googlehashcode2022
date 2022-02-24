@@ -3,6 +3,7 @@ package com.axxes.googlehashcode.model;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 import static java.util.Objects.nonNull;
 
@@ -40,7 +41,7 @@ public class Project {
     }
 
     public List<Contributor> getContributors() {
-        return skills.stream().map(Skill::getContributor).filter(Objects::nonNull).toList();
+        return skills.stream().map(Skill::getContributor).filter(Objects::nonNull).collect(Collectors.toList());
     }
 
     public boolean isNotFinished() {
