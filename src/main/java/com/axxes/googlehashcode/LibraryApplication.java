@@ -82,24 +82,32 @@ public class LibraryApplication {
             i++;
         } while (projects.size() < numProjects);
 
-
-        createOutput(file + "_out", projects, contributors);
+		for (Project project : projects) {
+			for (Project.Skill pskill : project.getSkills()) {
+				for (Contributor contributor : contributors) {
+					if(!contributor.isBusy()){
+						//if(pskill.getLevel() <= contributor.getLevel(pskill.getName())) {
+							project.addContributor(contributor);
+							pskill.fill();
+						//}
+					}
+				}
+			}
+		}
+		List fProj = projects.stream().filter(project -> project.isFinished()).toList();
+        createOutput(file + "_out", projects);
     }
 
-    public static void createOutput(String fileName, List<Project> projects, List<Contributor> contributors) {
+    public static void createOutput(String fileName, List<Project> projects) {
         final StringBuilder builder = new StringBuilder();
         builder.append(projects.size()).append(newLine);
-
-        int contCount = 0;
 
         for (Project project : projects) {
             builder.append(project.getName()).append(newLine);
 
-            int projNeed = project.getRoles();
-            String test = contributors.subList(contCount, contCount + projNeed)
+            String test = project.getContributors()
                     .stream().map(Contributor::getName)
                     .collect(Collectors.joining(" "));
-            contCount = projNeed - 1;
             builder.append(test).append(newLine);
         }
 
