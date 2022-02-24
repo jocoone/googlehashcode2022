@@ -8,6 +8,9 @@ import java.util.stream.Collectors;
 import com.axxes.googlehashcode.model.Contributor;
 import com.axxes.googlehashcode.model.Project;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import static com.axxes.googlehashcode.util.Util.readLines;
 import static com.axxes.googlehashcode.util.Util.writeString;
 
@@ -30,8 +33,7 @@ public class LibraryApplication {
     }
 
     private static void convert(String file) {
-        final List<String> lines = readLines(Paths.get("src/main/resources/" + file + ".txt")
-                .toString(), 0);
+        final List<String> lines = readLines("src/main/resources/" + file + ".txt");
         final String[] splitline1 = lines.get(0).split(" ");
         final int numContribu = Integer.parseInt(splitline1[0]);
         final int numProjects = Integer.parseInt(splitline1[1]);
@@ -47,7 +49,8 @@ public class LibraryApplication {
             final Contributor contributor = new Contributor(name);
 
             for (int sk = 0; sk < skills; sk++) {
-                final String[] skillLine = lines.get(i).split(" ");
+                final String[] skillLine = lines.get(i)
+                        .split(" ");
                 contributor.addSkill(skillLine[0], Integer.parseInt(skillLine[1]));
                 i++;
             }
@@ -68,9 +71,11 @@ public class LibraryApplication {
             final Project project = new Project(name, numDays, score, best, contri);
 
             for (int sk = 0; sk < contri; sk++) {
-                final String[] skillLine = lines.get(i).split(" ");
+                final String[] skillLine = lines.get(i)
+                        .split(" ");
                 Project.Skill skill = new Project.Skill(skillLine[0], Integer.parseInt(skillLine[1]));
-                project.getSkills().add(skill);
+                project.getSkills()
+                        .add(skill);
                 i++;
             }
             projects.add(project);
