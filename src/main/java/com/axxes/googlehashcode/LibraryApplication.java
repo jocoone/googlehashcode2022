@@ -85,11 +85,13 @@ public class LibraryApplication {
 		for (Project project : projects) {
 			for (Project.Skill pskill : project.getSkills()) {
 				for (Contributor contributor : contributors) {
-					if(!contributor.isBusy()){
-						//if(pskill.getLevel() <= contributor.getLevel(pskill.getName())) {
+                    if (contributor.isBusy()) {
+                        contributor.work();
+                    }else {
+						if(pskill.getLevel() <= contributor.getLevel(pskill.getName())) {
 							project.addContributor(contributor);
 							pskill.fill();
-						//}
+						}
 					}
 				}
 			}

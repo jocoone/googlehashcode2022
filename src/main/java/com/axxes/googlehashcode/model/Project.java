@@ -1,9 +1,7 @@
 package com.axxes.googlehashcode.model;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 public class Project {
 
@@ -34,11 +32,13 @@ public class Project {
     }
 
     public void addContributor(Contributor contributor) {
-        contributor.select();
+        contributor.select(days);
         contributors.add(contributor);
     }
 
-    public List<Contributor> getContributors() { return contributors; }
+    public List<Contributor> getContributors() {
+        return contributors;
+    }
 
     public boolean isFinished() {
         return !skills.stream().anyMatch(project -> !project.isFilled());

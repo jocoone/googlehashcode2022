@@ -7,12 +7,12 @@ public class Contributor {
 
     private String name;
     private Map<String, Integer> skills;
-    private boolean busy;
+    private int busy;
 
     public Contributor(final String name) {
         this.name = name;
         this.skills = new HashMap<>();
-        this.busy = false;
+        this.busy = 0;
     }
 
     public String getName() {
@@ -31,7 +31,15 @@ public class Contributor {
         return skills.containsKey(skill) ? skills.get(skill) : 0;
     }
 
-    public boolean isBusy() { return busy; }
+    public boolean isBusy() {
+        return busy > 0;
+    }
 
-    public void select() { this.busy = true; }
+    public void select(int days) {
+        this.busy = days;
+    }
+
+    public void work() {
+        this.busy -= 1;
+    }
 }
