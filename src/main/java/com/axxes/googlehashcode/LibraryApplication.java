@@ -8,11 +8,11 @@ import static com.axxes.googlehashcode.util.Util.writeString;
 
 public class LibraryApplication {
 	public static final String a_filename = "a_example";
-	public static final String b_filename = "b_read_on";
-	public static final String c_filename = "c_incunabula";
-	public static final String d_filename = "d_tough_choices";
-	public static final String e_filename = "e_so_many_books";
-	public static final String f_filename = "f_libraries_of_the_world";
+	public static final String b_filename = "b_better_start_small.in";
+	public static final String c_filename = "c_collaboration.in";
+	public static final String d_filename = "d_dense_schedule.in";
+	public static final String e_filename = "e_exceptional_skills.in";
+	public static final String f_filename = "f_find_great_mentors.in";
 	private static final String newLine = "\n";
 
 	public static void main(String[] args) {
