@@ -37,6 +37,7 @@ public class LibraryApplication {
 		int i = 1;
 		do {
 			final String line = lines.get(i);
+			System.out.println(line);
 			final String[] s = line.split(" ");
 			final String name = s[0];
 			final int skills = Integer.parseInt(s[1]);
@@ -46,14 +47,13 @@ public class LibraryApplication {
 			for (int sk = 0; sk < skills; sk++) {
 				final String[] skillLine = lines.get(i)
 												.split(" ");
-				Contributor.Skill skill = new Contributor.Skill(skillLine[0], Integer.parseInt(skillLine[1]));
-				contributor.addSkill(skill);
+				contributor.addSkill(skillLine[0], Integer.parseInt(skillLine[1]));
 				i++;
 			}
 
 			contributors.add(contributor);
+			i++;
 		} while (contributors.size() < numContribu);
-		i--;
 		List<Project> projects = new ArrayList<>();
 		do {
 			final String line = lines.get(i);
@@ -69,14 +69,17 @@ public class LibraryApplication {
 			for (int sk = 0; sk < contri; sk++) {
 				final String[] skillLine = lines.get(i)
 												.split(" ");
-				Contributor.Skill skill = new Contributor.Skill(skillLine[0], Integer.parseInt(skillLine[1]));
+				Project.Skill skill = new Project.Skill(skillLine[0], Integer.parseInt(skillLine[1]));
 				project.getSkills()
 					   .add(skill);
 				i++;
 			}
-			i++;
 			projects.add(project);
+			i++;
 		} while (projects.size() < numProjects);
+
+
+
 
 		createOutput(file + "_out", "");
 	}
