@@ -46,4 +46,20 @@ public class Project {
             return level;
         }
     }
+
+    public int getDays() {
+        return days;
+    }
+
+    public int getCompletionScore() {
+        return completionScore;
+    }
+
+    public int getBestBefore() {
+        return bestBefore;
+    }
+
+    public int getRoles() {
+        return roles;
+    }
 }
