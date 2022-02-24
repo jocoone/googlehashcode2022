@@ -1,15 +1,11 @@
 package com.axxes.googlehashcode;
 
-import java.nio.file.Paths;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.stream.Collectors;
-
 import com.axxes.googlehashcode.model.Contributor;
 import com.axxes.googlehashcode.model.Project;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static com.axxes.googlehashcode.util.Util.readLines;
 import static com.axxes.googlehashcode.util.Util.writeString;
@@ -24,12 +20,12 @@ public class LibraryApplication {
     private static final String newLine = "\n";
 
     public static void main(String[] args) {
-        convert(a_filename);
+        //convert(a_filename);
         convert(b_filename);
-		/*convert(c_filename);
-		convert(d_filename);
-		convert(e_filename);
-		convert(f_filename);*/
+		//convert(c_filename);
+		//convert(d_filename);
+		//convert(e_filename);
+		//convert(f_filename);
     }
 
     private static void convert(String file) {
@@ -47,7 +43,7 @@ public class LibraryApplication {
             final int skills = Integer.parseInt(s[1]);
 
             final Contributor contributor = new Contributor(name);
-
+            i++;
             for (int sk = 0; sk < skills; sk++) {
                 final String[] skillLine = lines.get(i)
                         .split(" ");
@@ -56,7 +52,6 @@ public class LibraryApplication {
             }
 
             contributors.add(contributor);
-            i++;
         } while (contributors.size() < numContribu);
         List<Project> projects = new ArrayList<>();
         do {
@@ -69,7 +64,7 @@ public class LibraryApplication {
             final int best = Integer.parseInt(s[3]);
             final int contri = Integer.parseInt(s[4]);
             final Project project = new Project(name, numDays, score, best, contri);
-
+            i++;
             for (int sk = 0; sk < contri; sk++) {
                 final String[] skillLine = lines.get(i)
                         .split(" ");
@@ -79,25 +74,34 @@ public class LibraryApplication {
                 i++;
             }
             projects.add(project);
-            i++;
         } while (projects.size() < numProjects);
 
-		for (Project project : projects) {
-			for (Project.Skill pskill : project.getSkills()) {
-				for (Contributor contributor : contributors) {
-                    if (contributor.isBusy()) {
-                        contributor.work();
-                    }else {
-						if(pskill.getLevel() <= contributor.getLevel(pskill.getName())) {
-							project.addContributor(contributor);
-							pskill.fill();
-						}
-					}
-				}
-			}
-		}
-		List fProj = projects.stream().filter(project -> project.isFinished()).toList();
-        createOutput(file + "_out", projects);
+        int day = 0;
+        while (day < 1000) {
+            List<Project> nfProj = projects.stream().filter(Project::isNotFinished).toList();
+            for (Project project : nfProj) {
+                for (Project.Skill pskill : project.getSkills()) {
+                    for (Contributor contributor : contributors) {
+                        if (contributor.isBusy()) {
+                            contributor.work();
+                        } else {
+                            if (pskill.getLevel() <= contributor.getLevel(pskill.getName())) {
+                                project.addContributor(pskill, contributor);
+                            }
+                        }
+                    }
+                }
+            }
+            int finalDay = day;
+            projects.forEach(project -> {
+                        if (project.isNotFinished() && project.getDays() == finalDay) {
+                            project.finish();
+                        }
+                    }
+            );
+            day++;
+        }
+        createOutput(file + "_out", projects.stream().filter(project -> !project.getContributors().isEmpty()).toList());
     }
 
     public static void createOutput(String fileName, List<Project> projects) {

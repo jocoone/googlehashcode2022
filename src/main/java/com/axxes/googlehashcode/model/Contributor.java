@@ -42,4 +42,8 @@ public class Contributor {
     public void work() {
         this.busy -= 1;
     }
+
+    public void levelUp(String name) {
+        skills.put(name, getLevel(name) + 1);
+    }
 }

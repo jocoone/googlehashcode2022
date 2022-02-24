@@ -2,6 +2,9 @@ package com.axxes.googlehashcode.model;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
+
+import static java.util.Objects.nonNull;
 
 public class Project {
 
@@ -11,7 +14,6 @@ public class Project {
     private int bestBefore;
     private int roles;
     private List<Project.Skill> skills;
-    private List<Contributor> contributors;
 
     public Project(final String name, final int days, final int completionScore, final int bestBefore, final int roles) {
         this.name = name;
@@ -20,7 +22,6 @@ public class Project {
         this.bestBefore = bestBefore;
         this.roles = roles;
         this.skills = new ArrayList<>();
-        this.contributors = new ArrayList<>();
     }
 
     public String getName() {
@@ -31,28 +32,37 @@ public class Project {
         return skills;
     }
 
-    public void addContributor(Contributor contributor) {
+    public void addContributor(Skill skill, Contributor contributor) {
         contributor.select(days);
-        contributors.add(contributor);
+        skill.fill(contributor);
     }
 
     public List<Contributor> getContributors() {
-        return contributors;
+        return skills.stream().map(Skill::getContributor).filter(Objects::nonNull).toList();
     }
 
-    public boolean isFinished() {
-        return !skills.stream().anyMatch(project -> !project.isFilled());
+    public boolean isNotFinished() {
+        return skills.stream().anyMatch(project -> !project.isFilled());
+    }
+
+    public void finish() {
+        for(Skill skill: this.skills) {
+            if (skill.getContributor() != null) {
+                skill.getContributor().levelUp(skill.name);
+            }
+        }
     }
 
     public static class Skill {
         private String name;
         private int level;
-        private boolean filled;
+        private Contributor contributor;
+
 
         public Skill(final String name, final int level) {
             this.name = name;
             this.level = level;
-            this.filled = false;
+            this.contributor = null;
         }
 
         public String getName() {
@@ -64,11 +74,15 @@ public class Project {
         }
 
         public boolean isFilled() {
-            return filled;
+            return nonNull(contributor);
         }
 
-        public void fill() {
-            this.filled = true;
+        public void fill(Contributor contributor) {
+            this.contributor = contributor;
+        }
+
+        public Contributor getContributor() {
+            return contributor;
         }
     }
 
