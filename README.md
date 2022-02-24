@@ -1,2 +1,2 @@
 # googlehashcode2022
-## Team Bende Ongeregeld
+## Team Hoopje Ongeregeld
