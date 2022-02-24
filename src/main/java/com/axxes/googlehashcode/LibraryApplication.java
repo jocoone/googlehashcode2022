@@ -1,7 +1,11 @@
 package com.axxes.googlehashcode;
 
 import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.List;
+
+import com.axxes.googlehashcode.model.Contributor;
+import com.axxes.googlehashcode.model.Project;
 
 import static com.axxes.googlehashcode.util.Util.readLines;
 import static com.axxes.googlehashcode.util.Util.writeString;
@@ -27,7 +31,36 @@ public class LibraryApplication {
 	private static void convert(String file) {
 		final List<String> lines = readLines(Paths.get("src/main/resources/" + file + ".txt")
 												  .toString(), 0);
+		final String[] splitline1 = lines.get(0).split(" ");
+		final int numContribu = Integer.parseInt(splitline1[0]);
+		final int numProjects = Integer.parseInt(splitline1[1]);
+		final List<Contributor> contributors = new ArrayList<>();
+		int i = 1;
+		do {
+			final String line = lines.get(i);
+			final String[] s = line.split(" ");
+			final String name = s[0];
+			final int skills = Integer.parseInt(s[1]);
 
+			final Contributor  contributor = new Contributor(name);
+
+			for (int sk = 0; sk < skills ; sk++) {
+				final String[] skillLine = lines.get(i).split(" ");
+				Contributor.Skill skill = new Contributor.Skill(skillLine[0], Integer.parseInt(skillLine[1]));
+				contributor.addSkill(skill);
+				i++;
+			}
+
+			contributors.add(contributor);
+		} while (contributors.size() < numContribu);
+
+		/*List<Project> projects = new ArrayList<>();
+		do {
+			final String line = lines.get(i);
+			final String[] s = line.split(" ");
+			final String name = s[0];
+
+		} while (projects.size() < numProjects);*/
 
 		createOutput(file + "_out", "");
 	}
