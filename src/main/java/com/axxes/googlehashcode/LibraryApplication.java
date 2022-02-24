@@ -53,14 +53,28 @@ public class LibraryApplication {
 
 			contributors.add(contributor);
 		} while (contributors.size() < numContribu);
-
-		/*List<Project> projects = new ArrayList<>();
+		i--;
+		List<Project> projects = new ArrayList<>();
 		do {
 			final String line = lines.get(i);
+			System.out.println(line);
 			final String[] s = line.split(" ");
 			final String name = s[0];
+			final int numDays = Integer.parseInt(s[1]);
+			final int score = Integer.parseInt(s[2]);
+			final int best = Integer.parseInt(s[3]);
+			final int contri = Integer.parseInt(s[4]);
+			final Project project = new Project(name, numDays, score, best, contri);
 
-		} while (projects.size() < numProjects);*/
+			for (int sk = 0; sk < contri ; sk++) {
+				final String[] skillLine = lines.get(i).split(" ");
+				Contributor.Skill skill = new Contributor.Skill(skillLine[0], Integer.parseInt(skillLine[1]));
+				project.getSkills().add(skill);
+				i++;
+			}
+			i++;
+			projects.add(project);
+		} while (projects.size() < numProjects);
 
 		createOutput(file + "_out", "");
 	}
