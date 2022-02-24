@@ -22,10 +22,10 @@ public class LibraryApplication {
     public static void main(String[] args) {
         //convert(a_filename);
         convert(b_filename);
-		//convert(c_filename);
-		//convert(d_filename);
-		//convert(e_filename);
-		//convert(f_filename);
+        //convert(c_filename);
+        //convert(d_filename);
+        //convert(e_filename);
+        //convert(f_filename);
     }
 
     private static void convert(String file) {
@@ -77,7 +77,7 @@ public class LibraryApplication {
         } while (projects.size() < numProjects);
 
         int day = 0;
-        while (day < 1000) {
+        while (day < projects.stream().map(Project::getDays).max(Integer::compareTo).orElse(0)) {
             List<Project> nfProj = projects.stream().filter(Project::isNotFinished).toList();
             for (Project project : nfProj) {
                 for (Project.Skill pskill : project.getSkills()) {

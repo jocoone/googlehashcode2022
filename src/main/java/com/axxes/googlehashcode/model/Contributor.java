@@ -43,7 +43,10 @@ public class Contributor {
         this.busy -= 1;
     }
 
-    public void levelUp(String name) {
-        skills.put(name, getLevel(name) + 1);
+    public void levelUp(Project.Skill pskill) {
+        int level = getLevel(name);
+        if (pskill.getLevel() == level) {
+            skills.put(name, level + 1);
+        }
     }
 }

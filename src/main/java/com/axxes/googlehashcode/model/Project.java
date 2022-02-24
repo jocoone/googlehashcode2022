@@ -14,6 +14,7 @@ public class Project {
     private int bestBefore;
     private int roles;
     private List<Project.Skill> skills;
+    private boolean finished;
 
     public Project(final String name, final int days, final int completionScore, final int bestBefore, final int roles) {
         this.name = name;
@@ -22,6 +23,7 @@ public class Project {
         this.bestBefore = bestBefore;
         this.roles = roles;
         this.skills = new ArrayList<>();
+        this.finished =false;
     }
 
     public String getName() {
@@ -42,13 +44,14 @@ public class Project {
     }
 
     public boolean isNotFinished() {
-        return skills.stream().anyMatch(project -> !project.isFilled());
+        return !finished;
     }
 
     public void finish() {
+        finished = true;
         for(Skill skill: this.skills) {
             if (skill.getContributor() != null) {
-                skill.getContributor().levelUp(skill.name);
+                skill.getContributor().levelUp(skill);
             }
         }
     }
