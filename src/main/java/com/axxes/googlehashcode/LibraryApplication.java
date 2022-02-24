@@ -1,11 +1,10 @@
 package com.axxes.googlehashcode;
 
-import java.nio.file.Paths;
-import java.util.ArrayList;
-import java.util.List;
-
 import com.axxes.googlehashcode.model.Contributor;
 import com.axxes.googlehashcode.model.Project;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import static com.axxes.googlehashcode.util.Util.readLines;
 import static com.axxes.googlehashcode.util.Util.writeString;
@@ -29,9 +28,9 @@ public class LibraryApplication {
 	}
 
 	private static void convert(String file) {
-		final List<String> lines = readLines(Paths.get("src/main/resources/" + file + ".txt")
-												  .toString(), 0);
-		final String[] splitline1 = lines.get(0).split(" ");
+		final List<String> lines = readLines("src/main/resources/" + file + ".txt");
+		final String[] splitline1 = lines.get(0)
+										 .split(" ");
 		final int numContribu = Integer.parseInt(splitline1[0]);
 		final int numProjects = Integer.parseInt(splitline1[1]);
 		final List<Contributor> contributors = new ArrayList<>();
@@ -42,10 +41,11 @@ public class LibraryApplication {
 			final String name = s[0];
 			final int skills = Integer.parseInt(s[1]);
 
-			final Contributor  contributor = new Contributor(name);
+			final Contributor contributor = new Contributor(name);
 
-			for (int sk = 0; sk < skills ; sk++) {
-				final String[] skillLine = lines.get(i).split(" ");
+			for (int sk = 0; sk < skills; sk++) {
+				final String[] skillLine = lines.get(i)
+												.split(" ");
 				Contributor.Skill skill = new Contributor.Skill(skillLine[0], Integer.parseInt(skillLine[1]));
 				contributor.addSkill(skill);
 				i++;
@@ -66,10 +66,12 @@ public class LibraryApplication {
 			final int contri = Integer.parseInt(s[4]);
 			final Project project = new Project(name, numDays, score, best, contri);
 
-			for (int sk = 0; sk < contri ; sk++) {
-				final String[] skillLine = lines.get(i).split(" ");
+			for (int sk = 0; sk < contri; sk++) {
+				final String[] skillLine = lines.get(i)
+												.split(" ");
 				Contributor.Skill skill = new Contributor.Skill(skillLine[0], Integer.parseInt(skillLine[1]));
-				project.getSkills().add(skill);
+				project.getSkills()
+					   .add(skill);
 				i++;
 			}
 			i++;
