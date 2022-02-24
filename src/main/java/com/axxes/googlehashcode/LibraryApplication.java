@@ -38,6 +38,7 @@ public class LibraryApplication {
 		int i = 1;
 		do {
 			final String line = lines.get(i);
+			System.out.println(line);
 			final String[] s = line.split(" ");
 			final String name = s[0];
 			final int skills = Integer.parseInt(s[1]);
@@ -51,8 +52,8 @@ public class LibraryApplication {
 			}
 
 			contributors.add(contributor);
+			i++;
 		} while (contributors.size() < numContribu);
-		i--;
 		List<Project> projects = new ArrayList<>();
 		do {
 			final String line = lines.get(i);
@@ -71,8 +72,8 @@ public class LibraryApplication {
 				project.getSkills().add(skill);
 				i++;
 			}
-			i++;
 			projects.add(project);
+			i++;
 		} while (projects.size() < numProjects);
 
 
